@@ -1,0 +1,60 @@
+Forecasting Sales & Item Price with LSTM
+
+Univariate Analysis
+Total sales by date for 5 days.
+
+Approach for Univariate Sale forecasting and Prediction with LSTM
+1) Data Preparation : Deciding on Lag and Window size for training and testing.
+2) Separating Out of Sample Data for Prediction
+3) Baseline LSTM parameters
+4) Hyper parameter Tuning 
+5) Best fit Model based on hyper parameters
+
+
+1. Data Preparation for 5 days prediction
+Data Granularity was shop wise sales. (So data was Grouped to day wise sales for overall company.)
+Training Data was Last 60 days with a window size of 5.
+Testing data was 5 days.
+
+2. Separating Out of Sample Data for Prediction
+Picked out last 5% of Data and set it aside for out of sample prediction
+
+3. Baseline Model
+Configuration:
+1 LSTM Layer
+# Of Neuron: 5
+Relu Activation for Weights
+Input Shape: (1,5)
+1 Timestep per Observation  
+5 Features (T-1 to T-5)
+1 Batch Size: 1 Sample and trains the network
+10 EPOCHS
+Dropout Rate: 0.2
+Dense Layer – with 5,1 output
+Training Optimization: Adam
+RMSE: 0.844
+
+4.1 Hyper parameter Tuning: Training Optimization Function
+- Approach was to run twenty iterations for each of the training optimization function and 
+decide based on mean and STD of RMSE which one is optimum
+- SGD choosen, dropped RMSE from 0.844 to 0.52199
+
+4.2 Hyper parameter Tuning: Other Possible Hyper parameters tuning
+a) Batch Size: Our model had sgd (Batch Size=1) we could have gone for mini sgd with batch size (12,64,128) : 1<batch_size<number of samples
+b) Activation Functions 
+c) Number of LSTM cells / Hidden Layer (dense)
+d) Number of Neurons per layer
+e) Drop out rates
+f) Window Size and Different Lags
+
+5. Best fit model using hyper parameters
+Configuration:
+1 LSTM Layer
+# Of Neuron: 5
+Relu Activation for Weights
+Input Shape: (1,5)
+1 Batch Size (1 sample per batch)
+100 EPOCHS (training pass through)
+Training Optimization: SGD
+RMSE: From 0.844 to 0.315!
+
